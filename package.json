@@ -1,7 +1,7 @@
 {
-  "name": "kazte",
+  "name": "htmlbase",
   "version": "1.0.0",
-  "description": "Reader app for Web.",
+  "description": "HTML/CSS starter kit.",
   "main": "gulpfile.js",
   "dependencies": {
     "gulp": "^3.9.1"

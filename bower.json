@@ -1,12 +1,12 @@
 {
-  "name": "kazte",
+  "name": "htmlbase",
   "authors": [
     "Fatih Turan <eposta@fatihturan.com>"
   ],
-  "description": "All in one reader Web app.",
+  "description": "HTML/CSS starter kit.",
   "main": "",
   "license": "MIT",
-  "homepage": "http://kazte.com",
+  "homepage": "http://unicrow.com",
   "private": true,
   "ignore": [
     "**/.*",
@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "bourbon": "^4.3.3",
-    "neat": "^2.0.0",
-    "jquery": "^3.1.1"
+    "jquery": "^3.1.1",
+    "include-media": "^1.4.9"
   }
 }

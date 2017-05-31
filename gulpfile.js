@@ -52,15 +52,16 @@ gulp.task('browserSync', function() {
     server: {
       baseDir: './'
     },
-    open: false,
-    // browser: "Google Chrome",
-    notify: false,
-    // notify: {
-    //     styles: {
-    //         top: 'auto',
-    //         bottom: '0'
-    //     }
-    // },
+    open: true,
+    browser: "Google Chrome",
+    notify: true,
+    notify: {
+        styles: {
+            top: 'auto',
+            bottom: '0',
+            borderRadius: '4px 0 0 0'
+        }
+    },
     snippetOptions: {
       rule: {
         match: /<\/body>/i,
