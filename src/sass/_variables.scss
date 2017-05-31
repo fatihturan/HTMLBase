@@ -1,0 +1,86 @@
+// ------------- //
+// COMMON COLORS //
+// ------------- //
+$aluminum: #989b9e;
+$mystic: #e4e9ee;
+$carribean-green: #00c9ad;
+$nevada: #676e73;
+$oslo-gray: #7e868c;
+$gull-gray: #a6aaad;
+$observatory: #008271;
+$whitesmoke: #f2f2f5;
+$lightgrey: #d7d6d9;
+$white-pointer: #fdfdff;
+
+
+
+// ----------------- //
+// BACKGROUND COLORS //
+// ----------------- //
+$sidebar: $mystic;
+$news-list-item-active: $mystic;
+$btn-primary-bg: $carribean-green;
+$pane-actions-bg: $whitesmoke;
+$pane-actions-border: $lightgrey;
+$btn-secondary-bg: $white-pointer;
+
+
+
+// ----------- //
+// TEXT COLORS //
+// ----------- //
+$w: #fff;
+$default-text-color: $aluminum;
+$default-link-color: $carribean-green;
+$news-sources-item-color: $oslo-gray;
+$news-sources-item-active-color: $nevada;
+$news-list-item-color: $nevada;
+$news-list-meta-color: $gull-gray;
+$h1-color: $nevada;
+$h2-color: $nevada;
+$h3-color: $nevada;
+$h4-color: $nevada;
+$btn-secondary-text: $gull-gray;
+$logo-typo: $nevada;
+
+
+
+// ----------- //
+// ICON COLORS //
+// ----------- //
+$pane-close-icon: $gull-gray;
+
+
+
+// ------------- //
+// BORDER COLORS //
+// ------------- //
+$news-sources-item-active-border: $carribean-green;
+$news-list-item-border: $mystic;
+$btn-primary-border: $observatory;
+$btn-secondary-border: $lightgrey;
+
+
+
+// ----- //
+// SIZES //
+// ----- //
+$sidebar-width: 270px;
+
+
+
+// ----------- //
+// FONT STACKS //
+// ----------- //
+$sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$default-font-stack: Roboto, $sans-serif;
+$monospaced: "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", Monaco, "Courier New", Courier, monospace;
+
+
+
+// ------------------ //
+// TRANSITION TIMINGS //
+// ------------------ //
+$slow-transition: .3s ease-in-out;
+$normal-transition: .2s ease-in-out;
+$fast-transition: .1s ease-in-out;

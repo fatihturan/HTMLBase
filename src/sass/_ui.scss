@@ -1,0 +1,97 @@
+// ---- //
+// LOGO //
+// ---- //
+.logo {
+  text-decoration: none;
+  img {
+    @include sr-only;
+  }
+  &__symbol {
+    @extend .btn-primary;
+    display: inline-block;
+    padding: 0 !important;
+    width: 50px;
+    height: 50px !important;
+    line-height: 49px !important;
+    font-size: 24px !important;
+    text-indent: 1px;
+    text-align: center;
+    &:active {
+      font-size: 22px !important;
+    }
+  }
+  &__typo {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    color: $logo-typo;
+    text-transform: uppercase;
+  }
+}
+
+
+
+// ------- //
+// BUTTONS //
+// ------- //
+.btn {
+  display: inline-block;
+  &-primary {
+    padding: 0 25px;
+    height: 40px;
+    background-color: $btn-primary-bg;
+    border: 2px solid $btn-primary-border;
+    box-shadow: 5px 5px $btn-primary-bg, inset 3px 3px $w;
+    font: 500 13px $default-font-stack;
+    line-height: 40px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: $w;
+    transition: all $fast-transition;
+    &:hover {
+      background-color: lighten($btn-primary-bg, 2%);
+      color: $w;
+      box-shadow: none;
+    }
+    &:active {
+      background-color: darken($btn-primary-bg, 2%);
+      font-size: 12px;
+      box-shadow: inset 0 0 0 2px $w;
+    }
+  }
+  &-secondary {
+    display: inline-block;
+    padding: 0 15px;
+    height: 40px;
+    background-color: $btn-secondary-bg;
+    border: 1px solid $btn-secondary-border;
+    border-radius: 3px;
+    color: $btn-secondary-text;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 40px;
+    text-transform: uppercase;
+    text-decoration: none;
+    i {
+      vertical-align: middle;
+    }
+    &:hover {
+      background-color: desaturate(darken($btn-secondary-bg, 10%), 95%);
+      color: darken($btn-secondary-text, 15%);
+    }
+    &:active {
+      background-color: desaturate(darken($btn-secondary-bg, 15%), 95%);
+    }
+  }
+}
+
+
+
+// ---------- //
+// PAGINATION //
+// ---------- //
+.pagination {
+  margin: 25px 0;
+  text-align: center;
+}
