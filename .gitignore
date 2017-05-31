@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/node,macos,bower,windows
 
+### Custom ###
+dist
+
 ### Bower ###
 bower_components
 .bower-cache

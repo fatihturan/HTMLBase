@@ -9,6 +9,7 @@ var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var browserSync = require('browser-sync').create();
 var sourcemaps  = require("gulp-sourcemaps");
+var fileinclude = require("gulp-file-include");
 
 // Error Handling
 var gulp_src = gulp.src;
@@ -46,13 +47,23 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('./dist/js/'));
 });
 
+// File Include
+gulp.task('fileinclude', function() {
+  gulp.src(['./src/*.html'])
+    .pipe(fileinclude({
+      prefix: '@@',
+      basepath: './src/includes'
+    }))
+    .pipe(gulp.dest('./dist'));
+});
+
 // BrowserSync
 gulp.task('browserSync', function() {
   browserSync.init({
     server: {
       baseDir: './'
     },
-    open: true,
+    open: false,
     browser: "Google Chrome",
     notify: true,
     notify: {
@@ -76,8 +87,9 @@ gulp.task('browserSync', function() {
 // Watch task
 gulp.task('watch', ['browserSync'], function() {
   gulp.watch('./src/sass/*.scss', ['styles']);
-  gulp.watch('./*.html', browserSync.reload);
   gulp.watch('./src/js/*.js', ['scripts']);
+  gulp.watch('./src/includes/*.html', ['fileinclude']);
+  gulp.watch('./*.html', browserSync.reload);
 });
 
-gulp.task('default', ['styles', 'scripts', 'watch']);
+gulp.task('default', ['styles', 'scripts', 'watch', 'fileinclude']);
