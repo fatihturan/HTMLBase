@@ -61,7 +61,7 @@ gulp.task('fileinclude', function() {
 gulp.task('browserSync', function() {
   browserSync.init({
     server: {
-      baseDir: './'
+      baseDir: './dist/'
     },
     open: false,
     browser: "Google Chrome",
@@ -89,7 +89,7 @@ gulp.task('watch', ['browserSync'], function() {
   gulp.watch('./src/sass/*.scss', ['styles']);
   gulp.watch('./src/js/*.js', ['scripts']);
   gulp.watch('./src/includes/*.html', ['fileinclude']);
-  gulp.watch('./*.html', browserSync.reload);
+  gulp.watch('./dist/*.html', browserSync.reload);
 });
 
 gulp.task('default', ['styles', 'scripts', 'watch', 'fileinclude']);
