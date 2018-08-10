@@ -11,6 +11,9 @@ var browserSync = require('browser-sync').create();
 var sourcemaps  = require("gulp-sourcemaps");
 var fileinclude = require("gulp-file-include");
 
+// File Paths
+var SASS_PATH = "./src/sass/*.scss";
+
 // Error Handling
 var gulp_src = gulp.src;
 gulp.src = function() {
@@ -70,7 +73,8 @@ gulp.task('browserSync', function() {
         styles: {
             top: 'auto',
             bottom: '0',
-            borderRadius: '4px 0 0 0'
+            borderRadius: '4px 0 0 0',
+            opacity: .9
         }
     },
     snippetOptions: {
