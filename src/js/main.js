@@ -1,3 +1,1 @@
-if ( 1 > 10) {
-  console.log("OK")
-}
+var test = "foobar";

@@ -12,7 +12,14 @@ var sourcemaps  = require("gulp-sourcemaps");
 var fileinclude = require("gulp-file-include");
 
 // File Paths
-var SASS_PATH = "./src/sass/*.scss";
+var CSS_PATH_SRC = "./src/sass/*.scss";
+var CSS_PATH_DIST = "./dist/css/";
+var JS_PATH_SRC = "./src/js/*.js";
+var JS_PATH_DIST = "./dist/js/";
+var HTML_PATH_SRC = "./src/*.html";
+var HTML_PATH_DIST = "./dist/*.html";
+var INCLUDES_PATH = "./src/includes/**/*.html";
+var JQUERY_PATH = "node_modules/jquery/dist/jquery.min.js";
 
 // Error Handling
 var gulp_src = gulp.src;
@@ -29,42 +36,41 @@ gulp.src = function() {
 
 // Styles
 gulp.task('styles', function() {
-  return gulp.src('./src/sass/*.scss')
-  .pipe(sass())
-  .pipe(autoprefixer('last 2 versions'))
-  .pipe(sourcemaps.init())
-  .pipe(gulp.dest('./dist/css/'))
-  .pipe(cleanCSS())
-  .pipe(sourcemaps.write())
-  .pipe(concat("main.css", {newLine: ""}))
-  .pipe(gulp.dest('./dist/css/'))
-  .pipe(browserSync.reload({ stream: true }))
+  return gulp.src(CSS_PATH_SRC)
+    .pipe(sass())
+    .pipe(autoprefixer('last 2 versions'))
+    .pipe(sourcemaps.init())
+    .pipe(gulp.dest(CSS_PATH_DIST))
+    .pipe(cleanCSS())
+    .pipe(sourcemaps.write())
+    .pipe(concat("main.css", {newLine: ""}))
+    .pipe(gulp.dest(CSS_PATH_DIST))
+    .pipe(browserSync.reload({ stream: true }))
 });
 
 // Scripts
 gulp.task('scripts', function() {
-  return gulp.src('./src/js/*.js')
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest('./dist/js/'))
+  return gulp.src([JS_PATH_SRC, JQUERY_PATH])
     .pipe(uglify())
-    .pipe(gulp.dest('./dist/js/'));
+    .pipe(concat('main.min.js'))
+    .pipe(gulp.dest(JS_PATH_DIST));
 });
 
 // File Include
 gulp.task('fileinclude', function() {
-  gulp.src(['./src/*.html'])
+  gulp.src(['HTML_PATH_SRC'])
     .pipe(fileinclude({
       prefix: '@@',
-      basepath: './src/includes'
+      basepath: 'src/includes'
     }))
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('dist'));
 });
 
 // BrowserSync
 gulp.task('browserSync', function() {
   browserSync.init({
     server: {
-      baseDir: './dist/'
+      baseDir: 'dist/'
     },
     open: false,
     browser: "Google Chrome",
@@ -89,11 +95,11 @@ gulp.task('browserSync', function() {
 })
 
 // Watch task
-gulp.task('watch', ['browserSync'], function() {
-  gulp.watch('./src/sass/*.scss', ['styles']);
-  gulp.watch('./src/js/*.js', ['scripts']);
-  gulp.watch('./src/includes/*.html', ['fileinclude']);
-  gulp.watch('./dist/*.html', browserSync.reload);
+gulp.task('watch', ['fileinclude', 'browserSync'], function() {
+  gulp.watch(CSS_PATH_SRC, ['styles']);
+  gulp.watch(JS_PATH_SRC, ['scripts']);
+  gulp.watch(INCLUDES_PATH, ['fileinclude']);
+  gulp.watch([HTML_PATH_SRC, HTML_PATH_DIST], browserSync.reload);
 });
 
-gulp.task('default', ['styles', 'scripts', 'watch', 'fileinclude']);
+gulp.task('default', ['fileinclude', 'styles', 'scripts', 'browserSync', 'watch' ]);
