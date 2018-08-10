@@ -5,21 +5,21 @@
   "main": "gulpfile.js",
   "dependencies": {
     "bourbon": "^5.1.0",
-    "gulp": "^3.9.1",
     "include-media": "^1.4.9",
     "jquery": "^3.3.1"
   },
   "devDependencies": {
     "browser-sync": "^2.18.8",
-    "gulp-autoprefixer": "^3.1.1",
-    "gulp-clean-css": "^3.0.3",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-clean-css": "^3.10.0",
     "gulp-concat": "^2.6.1",
-    "gulp-file-include": "^1.1.0",
+    "gulp-file-include": "^2.0.1",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
+    "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.4.1",
-    "gulp-uglify": "^2.0.1",
+    "gulp-uglify": "^3.0.1",
     "gulp-util": "^3.0.8"
   },
   "scripts": {
