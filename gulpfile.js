@@ -12,12 +12,9 @@ var sourcemaps  = require("gulp-sourcemaps");
 var fileinclude = require("gulp-file-include");
 
 // File Paths
-var CSS_PATH_SRC = "./src/sass/*.scss";
-var CSS_PATH_DIST = "./dist/css/";
-var JS_PATH_SRC = "./src/js/*.js";
-var JS_PATH_DIST = "./dist/js/";
-var HTML_PATH_SRC = "./src/*.html";
-var HTML_PATH_DIST = "./dist/*.html";
+var CSS_PATH = { src: "./src/sass/*.scss", dist: "./dist/css/"};
+var JS_PATH = { src: "./src/js/*.js", dist: "./dist/js/"};
+var HTML_PATH = { src: "./src/*.html", dist: "./dist/html/*.html"};
 var INCLUDES_PATH = "./src/includes/**/*.html";
 var JQUERY_PATH = "node_modules/jquery/dist/jquery.min.js";
 
@@ -36,29 +33,29 @@ gulp.src = function() {
 
 // Styles
 gulp.task('styles', function() {
-  return gulp.src(CSS_PATH_SRC)
+  return gulp.src(CSS_PATH["src"])
     .pipe(sass())
     .pipe(autoprefixer('last 2 versions'))
     .pipe(sourcemaps.init())
-    .pipe(gulp.dest(CSS_PATH_DIST))
+    .pipe(gulp.dest(CSS_PATH["dist"]))
     .pipe(cleanCSS())
     .pipe(sourcemaps.write())
     .pipe(concat("main.css", {newLine: ""}))
-    .pipe(gulp.dest(CSS_PATH_DIST))
+    .pipe(gulp.dest(CSS_PATH["dist"]))
     .pipe(browserSync.reload({ stream: true }))
 });
 
 // Scripts
 gulp.task('scripts', function() {
-  return gulp.src([JS_PATH_SRC, JQUERY_PATH])
+  return gulp.src([JS_PATH["src"], JQUERY_PATH])
     .pipe(uglify())
     .pipe(concat('main.min.js'))
-    .pipe(gulp.dest(JS_PATH_DIST));
+    .pipe(gulp.dest(JS_PATH["dist"]));
 });
 
 // File Include
 gulp.task('fileinclude', function() {
-  gulp.src(['HTML_PATH_SRC'])
+  return gulp.src(HTML_PATH["src"])
     .pipe(fileinclude({
       prefix: '@@',
       basepath: 'src/includes'
@@ -96,10 +93,10 @@ gulp.task('browserSync', function() {
 
 // Watch task
 gulp.task('watch', ['fileinclude', 'browserSync'], function() {
-  gulp.watch(CSS_PATH_SRC, ['styles']);
-  gulp.watch(JS_PATH_SRC, ['scripts']);
+  gulp.watch(CSS_PATH["src"], ['styles']);
+  gulp.watch(JS_PATH["src"], ['scripts']);
   gulp.watch(INCLUDES_PATH, ['fileinclude']);
-  gulp.watch([HTML_PATH_SRC, HTML_PATH_DIST], browserSync.reload);
+  gulp.watch([HTML_PATH["src"], HTML_PATH["src"]], browserSync.reload);
 });
 
 gulp.task('default', ['fileinclude', 'styles', 'scripts', 'browserSync', 'watch' ]);
