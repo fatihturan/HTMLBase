@@ -10,6 +10,8 @@ var uglify        = require('gulp-uglify');
 var browserSync   = require('browser-sync').create();
 var sourcemaps    = require("gulp-sourcemaps");
 var fileinclude   = require("gulp-file-include");
+var watch         = require("gulp-watch");
+var runSequence   = require("run-sequence");
 
 // File Paths
 var CSS_PATH      = { src: "src/sass/*.scss", dist: "dist/css/" };
@@ -100,10 +102,18 @@ gulp.task('browserSync', function() {
 
 // Watch task
 gulp.task('watch', function() {
-  gulp.watch(CSS_PATH.src, ['styles']);
-  gulp.watch(JS_PATH.src, ['scripts']);
-  gulp.watch(INCLUDES_PATH, ['fileinclude']);
-  gulp.watch([HTML_PATH.src], ['fileinclude']);
+  watch(CSS_PATH.src, function () {
+    runSequence('styles');
+  });
+  watch(JS_PATH.src, function () {
+    runSequence('scripts');
+  });
+  watch(INCLUDES_PATH, function () {
+    runSequence('fileinclude');
+  });
+  watch([HTML_PATH.src], function () {
+    runSequence('fileinclude');
+  });
 });
 
 gulp.task('default', ['fileinclude', 'styles', 'scripts', 'browserSync', 'watch' ]);
