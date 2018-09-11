@@ -7,7 +7,8 @@ var concat        = require('gulp-concat');
 var cleanCSS      = require('gulp-clean-css');
 var sass          = require('gulp-sass');
 var uglify        = require('gulp-uglify');
-var browserSync   = require('browser-sync').create();
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
 var sourcemaps    = require("gulp-sourcemaps");
 var fileinclude   = require("gulp-file-include");
 var watch         = require("gulp-watch");
@@ -49,7 +50,7 @@ gulp.task('styles', function() {
     .pipe(sourcemaps.write())
     .pipe(concat("main.css", {newLine: ""}))
     .pipe(gulp.dest(CSS_PATH.dist))
-    .pipe(browserSync.reload({ stream: true }))
+    .pipe(reload({stream:true}))
 });
 
 //  File Include
@@ -60,7 +61,7 @@ gulp.task('fileinclude', function () {
       basepath: 'src/includes'
     }))
     .pipe(gulp.dest(HTML_PATH.dist))
-    .pipe(browserSync.reload({ stream: true }))
+    .pipe(reload({stream:true}))
 });
 
 // Scripts
@@ -69,7 +70,7 @@ gulp.task('scripts', function () {
     .pipe(uglify())
     .pipe(concat('main.min.js'))
     .pipe(gulp.dest(JS_PATH.dist))
-    .pipe(browserSync.reload({ stream: true }))
+    .pipe(reload({stream:true}))
 });
 
 // BrowserSync
