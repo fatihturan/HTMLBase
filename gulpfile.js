@@ -1,35 +1,21 @@
 // Use Gulp Packages
+var config        = require('./config');
 var gulp          = require('gulp');
-var autoprefixer  = require('gulp-autoprefixer');
-var plumber       = require('gulp-plumber');
-var gutil         = require('gulp-util');
-var concat        = require('gulp-concat');
-var cleanCSS      = require('gulp-clean-css');
-var sass          = require('gulp-sass');
-var uglify        = require('gulp-uglify');
-var browserSync   = require('browser-sync').create();
-var sourcemaps    = require("gulp-sourcemaps");
-var fileinclude   = require("gulp-file-include");
-var watch         = require("gulp-watch");
+var glp           = require('gulp-load-plugins');
+var $             = glp(config.gulpLoadConfig);
+var browserSync   = require('browser-sync');
+var reload        = browserSync.reload;
 var runSequence   = require("run-sequence");
+var del           = require('del');
 
-// File Paths
-var CSS_PATH      = { src: "src/sass/*.scss", dist: "dist/css/" };
-var JS_PATH       = { src: "src/js/*.js", dist: "dist/js/" };
-var HTML_PATH     = { src: "src/*.html", dist: "dist" };
-var INCLUDES_PATH = "src/includes/**/*.html";
-var JS_PLUGINS    = [
-                    "node_modules/jquery/dist/jquery.min.js",
-                    "node_modules/testingen/test.js"
-                  ];
 
 // Error Handling
 var gulp_src = gulp.src;
 gulp.src = function() {
   return gulp_src.apply(gulp, arguments)
-    .pipe(plumber(function(error) {
+    .pipe($.plumber(function(error) {
       // Output an error message
-      gutil.log(gutil.colors.red('Error (' + error.plugin + '): ' + error.message));
+      $.util.log($.util.colors.red('Error (' + error.plugin + '): ' + error.message));
       // emit the end event, to properly end the task
       this.emit('end');
     })
@@ -38,82 +24,80 @@ gulp.src = function() {
 
 // Styles
 gulp.task('styles', function() {
-  return gulp.src(CSS_PATH.src)
-    .pipe(sass({
+  return gulp.src(config.css.src)
+    .pipe($.sass({
       includePaths: ['node_modules']
     }))
-    .pipe(autoprefixer('last 2 versions'))
-    .pipe(sourcemaps.init())
-    .pipe(gulp.dest(CSS_PATH.dist))
-    .pipe(cleanCSS())
-    .pipe(sourcemaps.write())
-    .pipe(concat("main.css", {newLine: ""}))
-    .pipe(gulp.dest(CSS_PATH.dist))
-    .pipe(browserSync.reload({ stream: true }))
+    .pipe($.autoprefixer('last 2 versions'))
+    .pipe($.sourcemaps.init())
+    .pipe(gulp.dest(config.css.dist))
+    .pipe($.clean())
+    .pipe($.sourcemaps.write())
+    .pipe($.csso())
+    .pipe($.cssnano({
+      discardComments: {removeAll: true},
+      zindex: false
+    }))
+    .pipe(gulp.dest(config.css.dist))
+    .pipe(reload({stream:true}))
 });
 
 //  File Include
 gulp.task('fileinclude', function () {
-  return gulp.src(HTML_PATH.src, )
-    .pipe(fileinclude({
+  return gulp.src(config.html.src)
+    .pipe($.include({
       prefix: '@@',
       basepath: 'src/includes'
     }))
-    .pipe(gulp.dest(HTML_PATH.dist))
-    .pipe(browserSync.reload({ stream: true }))
+    .pipe(gulp.dest('dist'))
+    .pipe(reload({stream:true}))
 });
 
 // Scripts
 gulp.task('scripts', function () {
-  return gulp.src([].concat(JS_PATH.src, JS_PLUGINS))
-    .pipe(uglify())
-    .pipe(concat('main.min.js'))
-    .pipe(gulp.dest(JS_PATH.dist))
-    .pipe(browserSync.reload({ stream: true }))
+  return gulp.src([].concat(config.js.src, config.plugins))
+    .pipe($.uglify())
+    .pipe($.concat('main.min.js'))
+    .pipe(gulp.dest(config.js.dist))
+    .pipe(reload({stream:true}))
+});
+
+gulp.task('images', function () {
+  return gulp.src(config.images.src)
+    .pipe($.imagemin())
+    .pipe(gulp.dest(config.images.dist));
 });
 
 // BrowserSync
-gulp.task('browserSync', function() {
-  browserSync.init({
-    server: {
-      baseDir: HTML_PATH.dist
-    },
-    open: false,
-    browser: "Google Chrome",
-    notify: true,
-    notify: {
-        styles: {
-            top: 'auto',
-            bottom: '0',
-            borderRadius: '4px 0 0 0',
-            opacity: .9
-        }
-    },
-    snippetOptions: {
-      rule: {
-        match: /<\/body>/i,
-        fn: function (snippet, match) {
-          return snippet + match;
-        }
-      }
-    }
-  })
+gulp.task('serve', function() {
+  browserSync(config.browserSync);
+
+  gulp.task('styles:watch', ['styles']);
+  gulp.watch(config.css.src, ['styles:watch']);
+
+  gulp.task('scripts:watch', ['scripts']);
+  gulp.watch(config.js.src, ['scripts:watch']);
+
+  gulp.task('images:watch', ['images']);
+  gulp.watch(config.images.src, ['images:watch']);
+
+  gulp.task('fileinclude:watch', ['fileinclude']);
+  gulp.watch([config.html.src, config.include], ['fileinclude:watch']);
 })
 
-// Watch task
-gulp.task('watch', function() {
-  watch(CSS_PATH.src, function () {
-    runSequence('styles');
-  });
-  watch(JS_PATH.src, function () {
-    runSequence('scripts');
-  });
-  watch(INCLUDES_PATH, function () {
-    runSequence('fileinclude');
-  });
-  watch([HTML_PATH.src], function () {
-    runSequence('fileinclude');
-  });
+gulp.task('clean', function (cb) {
+  del(['dist']).then(() => cb());
 });
 
-gulp.task('default', ['fileinclude', 'styles', 'scripts', 'browserSync', 'watch' ]);
+gulp.task('default', ['clean'], function () {
+  var tasks = [
+    'fileinclude',
+    'styles',
+    'scripts',
+    'images'
+  ];
+
+  runSequence(tasks, function () {
+      gulp.start('serve');
+  });
+});
