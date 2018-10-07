@@ -12,6 +12,7 @@ var sourcemaps    = require("gulp-sourcemaps");
 var fileinclude   = require("gulp-file-include");
 var watch         = require("gulp-watch");
 var runSequence   = require("run-sequence");
+var htmlbeautify = require('gulp-html-beautify');
 
 // File Paths
 var CSS_PATH      = { src: "src/sass/*.scss", dist: "dist/css/" };
@@ -57,7 +58,8 @@ gulp.task('fileinclude', function () {
     .pipe(fileinclude({
       prefix: '@@',
       basepath: 'src/includes'
-    }))
+		}))
+		.pipe(htmlbeautify({indent_size: 2}))
     .pipe(gulp.dest(HTML_PATH.dist))
     .pipe(browserSync.reload({ stream: true }))
 });
