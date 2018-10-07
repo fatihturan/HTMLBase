@@ -20,7 +20,6 @@ var HTML_PATH     = { src: "src/*.html", dist: "dist" };
 var INCLUDES_PATH = "src/includes/**/*.html";
 var JS_PLUGINS    = [
                     "node_modules/jquery/dist/jquery.min.js",
-                    "node_modules/testingen/test.js"
                   ];
 
 // Error Handling
