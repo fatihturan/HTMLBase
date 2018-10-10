@@ -18,6 +18,7 @@ var htmlbeautify = require('gulp-html-beautify');
 var CSS_PATH      = { src: "src/sass/*.scss", dist: "dist/css/" };
 var JS_PATH       = { src: "src/js/*.js", dist: "dist/js/" };
 var HTML_PATH     = { src: "src/*.html", dist: "dist" };
+var IMG_PATH     = { src: "src/img/**/*", dist: "dist/img" };
 var INCLUDES_PATH = "src/includes/**/*.html";
 var JS_PLUGINS    = [
                     "node_modules/jquery/dist/jquery.min.js",
@@ -62,6 +63,12 @@ gulp.task('fileinclude', function () {
 		.pipe(htmlbeautify({indent_size: 2}))
     .pipe(gulp.dest(HTML_PATH.dist))
     .pipe(browserSync.reload({ stream: true }))
+});
+
+// Images
+gulp.task('images', function() {
+  return gulp.src(IMG_PATH.src)
+    .pipe(gulp.dest(IMG_PATH.dist));
 });
 
 // Scripts
@@ -111,6 +118,9 @@ gulp.task('watch', function() {
   });
   watch(INCLUDES_PATH, function () {
     runSequence('fileinclude');
+  });
+  watch(IMG_PATH.src, function () {
+    runSequence('images');
   });
   watch([HTML_PATH.src], function () {
     runSequence('fileinclude');
